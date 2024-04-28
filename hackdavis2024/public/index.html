@@ -7,6 +7,21 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <h1>Send Reminder Emails to Volunteers</h1>
+    <form id="reminderForm">
+        <label for="subject">Subject:</label>
+        <input type="text" id="subject" name="subject" required><br><br>
+
+        <label for="message">Message:</label>
+        <textarea id="message" name="message" rows="4" cols="50" required></textarea><br><br>
+
+        <label for="recipients">Recipients (comma-separated emails or 'all'):</label>
+        <input type="text" id="recipients" name="recipients" required><br><br>
+
+        <button type="submit">Send Reminders</button>
+    </form>
+
+    <script src="app.js"></script>
     <h1>Volunteer Shifts</h1>
     <table id="shiftsTable">
         <thead>

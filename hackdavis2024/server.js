@@ -4,7 +4,17 @@ const bodyParser = require('body-parser');
 const knex = require('knex');
 const xlsx = require('xlsx');
 const cors = require('cors');
+const app = express();
 
+const filePath = 'C:\\Users\\hoang\\Documents\\hackdavis2024\\test_calendar_2024.xlsx'; // Updated file path
+
+app.use(cors());
+app.use(express.json());
+app.use(express.static('public'));
+const sgMail = require('@sendgrid/mail');
+
+const API_KEY = ''; // Ensure to replace with your actual SendGrid API key
+sgMail.setApiKey(API_KEY);
 
 const db = knex({
     client: 'pg',
@@ -16,7 +26,6 @@ const db = knex({
     }
 })
 
-const app = express();
 
 let intialPath = path.join(__dirname, "public");
 
@@ -76,15 +85,19 @@ app.post('/login-user', (req, res) => {
     })
 })
 
-app.listen(3000, (req, res) => {
-    console.log('listening on port 3000......')
-})
 
 
-
-app.use(cors());
-app.use(express.json());
-app.use(express.static('public'));
+app.get('/api/shifts', (req, res) => {
+    try {
+        console.log('Attempting to read Excel file from:', filePath);
+        const shifts = readExcelData(filePath);
+        console.log('Data read successfully:', shifts);
+        res.json(shifts);
+    } catch (error) {
+        console.error('Error reading Excel file:', error);
+        res.status(500).send('Error processing Excel file');
+    }
+});
 
 function readExcelData(filePath) {
     try {
@@ -98,15 +111,44 @@ function readExcelData(filePath) {
     }
 }
 
-app.get('/api/shifts', (req, res) => {
-    const filePath = 'C:\\Users\\hoang\\Documents\\hackdavis2024\\test_calendar_2024.xlsx'; // Updated file path
-    try {
-        console.log('Attempting to read Excel file from:', filePath);
-        const shifts = readExcelData(filePath);
-        console.log('Data read successfully:', shifts);
-        res.json(shifts);
-    } catch (error) {
-        console.error('Error reading Excel file:', error);
-        res.status(500).send('Error processing Excel file');
+app.post('/send-custom-reminders', (req, res) => {
+    const { message, subject, recipients } = req.body;
+    const contactInfo = readExcelData(filePath, 1); // 1 is typically the index for the second sheet
+    
+    let emailsToSend = [];
+
+    if (recipients === 'all') {
+        emailsToSend = contactInfo.map(item => item.email);  // Adjust 'email' if the column name is different
+    } else {
+        // For individual or selected emails, parse the recipients field
+        emailsToSend = recipients.split(',').map(email => email.trim());
     }
+
+    emailsToSend.forEach(email => {
+        sendReminderEmail(email, subject, message);
+    });
+
+    res.send('Emails sent successfully');
 });
+
+
+function sendReminderEmail(to, subject, text) {
+    const msg = {
+        to: to,
+        from:'aggiehouseschedules@gmail.com',  // This should be a verified sender
+        subject: subject,
+        text: text,
+    };
+
+    sgMail.send(msg)
+        .then(() => console.log('Email sent successfully to', to))
+        .catch((error) => console.error('Error sending email:', error));
+}
+
+app.listen(3000, (req, res) => {
+    console.log('listening on port 3000......')
+})
+
+
+
+
