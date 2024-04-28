@@ -6,14 +6,16 @@ const xlsx = require('xlsx');
 const cors = require('cors');
 const app = express();
 
-const filePath = 'C:\\Users\\hoang\\Documents\\hackdavis2024\\test_calendar_2024.xlsx'; // Updated file path
+// Change this file path relevent to your local address
+const filePath = 'C:\\Users\\minhk\\OneDrive\\Documents\\Desktop\\Hack-Davis-main\\Hack-Davis-main\\hackdavis2024\\Test Calendar 2024.xlsx'; // Updated file path
 
 app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 const sgMail = require('@sendgrid/mail');
 
-const API_KEY = ''; // Ensure to replace with your actual SendGrid API key
+// Ensure to replace with your actual SendGrid API key
+const API_KEY = ''; 
 sgMail.setApiKey(API_KEY);
 
 const db = knex({
@@ -21,7 +23,7 @@ const db = knex({
     connection: {
         host: '127.0.0.1',
         user: 'postgres',
-        password: 'hieu2812',
+        password: '2002',
         database: 'hackdavis2024'
     }
 })

@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
+    <header class="site-header">
+        <img src="../img/aggie_house.png" alt="Company Logo" class="logo">
+    </header>
     <h1>Send Reminder Emails to Volunteers</h1>
     <form id="reminderForm">
         <label for="subject">Subject:</label>
@@ -23,18 +26,20 @@
 
     <script src="app.js"></script>
     <h1>Volunteer Shifts</h1>
-    <table id="shiftsTable">
-        <thead>
-            <tr>
-                <th>Shift Time</th>
-                <th>Date</th>
-                <th>Volunteers</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Data rows will go here -->
-        </tbody>
-    </table>
+    <div class="table-container">
+        <table id="shiftsTable">
+            <thead>
+                <tr>
+                    <th>Shift Time</th>
+                    <th>Date</th>
+                    <th>Volunteers</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data rows will go here -->
+            </tbody>
+        </table>
+    </div>
     <script src="js/home.js"></script>
     <script src="js/scripts.js"></script>
     
