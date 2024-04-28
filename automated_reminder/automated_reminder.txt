@@ -1,0 +1,23 @@
+function senderEmail() {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Sheet1');
+  const data = sheet.getDataRange().getValues();
+  const events = data.slice(1);
+  const today = new Date();
+
+  today.setHours(0, 0, 0, 0);
+  events.forEach((event,index) => {
+    const date = new Date(event[1]);
+    date.setHours(0, 0, 0, 0);
+    const diff = Math.round((date-today)/(1000*60*60*24));
+    if(diff <= 2){
+      const emails = event.slice(3);
+      Logger.log(emails.length)
+      const subject = 'AggieHouse Reminder';
+      const body = 'This is a reminder for you upcomming volunteer on ' + event[1];
+      for (let j = 0; j < emails.length; j++) {
+        email = emails[j];
+        MailApp.sendEmail(email, subject, body);
+      }
+    }
+  })
+}
