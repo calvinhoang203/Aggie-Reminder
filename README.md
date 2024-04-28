@@ -1,15 +1,24 @@
 # Aggie-Reminder 
 ## Procedures on how to run the program
+
 1.) Open your terminal/commandprompt and make sure you have **nodejs** installed. To do this you can go to the website **https://nodejs.org/en** and download node.js. For mac users you can also use a package manager like Homebrew. If you have homebrew then you can type in the command **brew install node** and brew will install node.js
+
 2.) In the terminal, type **npm install <package_name>** to install nodejs project manager packages which is essential to running the program correctly. You can verify if you have it installed by typing in **npm -v** which gives you the version of the npm you have currently installed.
+
 3.) Once you have downloaded the folder from Github. Navigate to the folder of HACKDAVIS2024 and search for the file called **server.js**
+
 4.) Open the file and navigate to line 9 which says **const filePath = ''; // Updated file path** add the file path of the excel worksheet that you want to work with in between the quotes. 
+
 5.) If you have those things completed then you are ready to run the program. Open your terminal/command prompt and make sure you are in the directory where **server.js** is. To know your current directory, type in **pwd** and it will display what directory are you currently in.
+
 6.) Inorder for you to run the program you have to type in **node server.js** 
+
 Once it runs it should display something like this:
 **[nodemon] starting `node server.js`
 listening on port 3000......**
+
 7.) Go to your web browser and type in **localhost:3000** and voila you are currently running the program!
+
 8.) If you are an admin and would want to send out reminders to the volunteers regarding their shifts. You can do this by signing in to your email 
 
 
