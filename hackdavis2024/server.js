@@ -2,6 +2,9 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const knex = require('knex');
+const xlsx = require('xlsx');
+const cors = require('cors');
+
 
 const db = knex({
     client: 'pg',
@@ -76,3 +79,34 @@ app.post('/login-user', (req, res) => {
 app.listen(3000, (req, res) => {
     console.log('listening on port 3000......')
 })
+
+
+
+app.use(cors());
+app.use(express.json());
+app.use(express.static('public'));
+
+function readExcelData(filePath) {
+    try {
+        const workbook = xlsx.readFile(filePath);
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        return xlsx.utils.sheet_to_json(worksheet);
+    } catch (error) {
+        console.error('Failed to read Excel file:', error);
+        throw error; // Rethrow the error to be caught in the endpoint
+    }
+}
+
+app.get('/api/shifts', (req, res) => {
+    const filePath = 'C:\\Users\\hoang\\Documents\\hackdavis2024\\test_calendar_2024.xlsx'; // Updated file path
+    try {
+        console.log('Attempting to read Excel file from:', filePath);
+        const shifts = readExcelData(filePath);
+        console.log('Data read successfully:', shifts);
+        res.json(shifts);
+    } catch (error) {
+        console.error('Error reading Excel file:', error);
+        res.status(500).send('Error processing Excel file');
+    }
+});
